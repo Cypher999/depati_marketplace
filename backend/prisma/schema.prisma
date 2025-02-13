@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserType {
+  admin
+  customer
+}
+
+enum Status {
+  belum_diproses
+  dalam_perjalanan
+  sampai
+  batal
+}
+
+model user{
+  id            Int   @id @default(autoincrement())
+  name          String?
+  username      String?  @unique
+  password String?
+  photo String? @default("man.jpg")
+  role     UserType
+  penjualan penjualan[]
+}
+
+model produk{
+  id Int @id @default(autoincrement()) 
+  nama String
+  satuan String
+  deskripsi String
+  stok Int
+  harga Float
+  penjualan penjualan[]
+  pembelian pembelian[]
+}
+
+model penjualan{
+  id Int @id @default(autoincrement())
+  userId Int
+  produkId Int 
+  alamat String
+  jumlah Int
+  createdAt DateTime @default(now())
+  status Status
+  user user @relation(fields:[userId],references: [id])
+  produk produk @relation(fields:[produkId],references: [id])
+}
+
+model pembelian{
+  id Int @id @default(autoincrement())
+  produkId Int 
+  suplier String
+  jumlah Int
+  harga Float
+  createdAt DateTime @default(now())
+  produk produk @relation(fields:[produkId],references: [id])
+}
