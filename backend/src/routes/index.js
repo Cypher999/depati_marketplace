@@ -3,12 +3,11 @@ class AdminRouter{
     constructor(){
         const adminFilter=require("../middleware/adminFilter");
         this.router=exp.Router()
-        this.router.use(adminFilter);
+        // this.router.use(adminFilter);
         this.produk=require("../controllers/admin/produk")
-        // this.user=require("../controllers/admin/user")
-        this.router.use("/produk",this.produkRoute())
-        
-        // this.router.use("/user",this.userRoute())
+        this.user=require("../controllers/admin/user")
+        this.router.use("/produk",this.produkRoute())        
+        this.router.use("/user",this.userRoute())
     }
     produkRoute=()=>{
         let route=exp.Router();        
@@ -17,6 +16,16 @@ class AdminRouter{
         route.post('/',this.produk.create)
         route.put('/:id',this.produk.update)
         route.delete('/:id',this.produk.del)
+        return route
+    }
+    userRoute=()=>{
+        let route=exp.Router();        
+        route.get('/',this.user.index)
+        route.get('/:id',this.user.getOne)
+        route.post('/',this.user.create)
+        route.put('/update-data/:id',this.user.updateData)
+        route.put('/update-password/:id',this.user.updatePassword)
+        route.delete('/:id',this.user.del)
         return route
     }
 }

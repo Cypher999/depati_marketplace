@@ -30,7 +30,7 @@ model user{
   name          String?
   username      String?  @unique
   password String?
-  photo String? @default("man.jpg")
+  photo String? @default("man")
   role     UserType
   penjualan penjualan[]
 }
@@ -42,6 +42,7 @@ model produk{
   deskripsi String
   stok Int
   harga Float
+  photo String? @default("product")
   penjualan penjualan[]
   pembelian pembelian[]
 }

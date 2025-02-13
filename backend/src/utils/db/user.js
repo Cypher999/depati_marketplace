@@ -13,7 +13,7 @@ const getOne=async (id)=>{
     })
     return data;
 }
-const countName=async (nama)=>{
+const countName=async (username)=>{
     let data=await prisma.user.count({
         where : { username }
     })
